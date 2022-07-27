@@ -22,8 +22,11 @@ CFLAGS	= -I./inc -I./libft/inc #-g3 -fsanitize=address
 SRCS	= 	./src/main/main.c \
 			./src/parsing/parsing.c\
 			./src/utils/split_to_list.c\
-			./src/utils/node_funcions.c\
+			./src/utils/node_functions.c\
 			./src/env/env.c \
+			./src/exec/exec.c \
+			./src/exec/utils_exec.c \
+			./src/exec/path_format.c \
 					
 OBJS	= $(SRCS:%.c=%.o)
 

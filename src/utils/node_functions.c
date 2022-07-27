@@ -27,7 +27,7 @@ t_parse	*ft_new_node(char *data)
 		free(new);
 		return (NULL);
 	}
-	new->type = 0;
+	new->type = get_type(data);
 	new->next = NULL;
 	return (new);
 }
@@ -49,7 +49,7 @@ void	ft_node_add_back(t_parse **list, t_parse *new)
 	}
 }
 
-int	add_node(t_parse **list, char *data)
+int	add_node(t_parse *list, char *data)
 {
 	t_parse	*new;
 

@@ -6,27 +6,29 @@ void	handler(int signum)
 		exit(EXIT_SUCCESS);
 }
 
+static void	redirect_input(t_parse *parse, char **env)
+{
+	child_work(parse->data, get_path_bin(parse->data, env), env);
+}
+
 int	main(int ac, char **av, char **env)
 {
-	(void) ac, (void) av, (void) env;
-	char *ok;
-	t_parse	*parsed_input;
-	t_root	*root;
+	(void)ac;
+	(void)av;
+	
+	t_root	root;
+	t_parse **parsed;
+	char	*input;
 
-	parsed_input = NULL;
-	init_env(root->env, env);
+	if(!init_env(&root, env))
+		return (0);
 	while(1)
 	{
 		signal(SIGINT, handler);
 		signal(SIGQUIT, handler);
-		ok = readline("minishell: ");
-		parsing(ok, &parsed_input);
-		add_history(ok);
-		while(parsed_input)
-		{
-			printf("%s\n",parsed_input->data);
-		//	printf("%d\n",parsed_input->type);
-			parsed_input = parsed_input->next;
-		}
+		
+		input = readline("minishell: ");
+		parsed = parsing(input);
+		redirect_input(*parsed, env);
 	}	
 }

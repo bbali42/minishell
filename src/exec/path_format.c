@@ -6,7 +6,7 @@
 /*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 19:45:34 by bbali             #+#    #+#             */
-/*   Updated: 2022/07/26 22:30:15 by bbali            ###   ########.fr       */
+/*   Updated: 2022/07/28 01:56:23 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*path_format(char *path, char *bin)
 	return (res);
 }
 
-char	*get_path(char *cmd, char **env)
+char	*get_path_bin(char *cmd, char **env)
 {
 	char	*path;
 	char	*dir;

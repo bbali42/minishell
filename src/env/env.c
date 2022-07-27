@@ -10,6 +10,8 @@ int	init_env(t_root *root, char **array)
 	if (!env)
 		return (0);
 	env->value = ft_strdup(array[0]);
+	if (!env->value)
+		return (0);
 	env->next = NULL;
 	root->env = env;
 	i = 1;
