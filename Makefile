@@ -10,46 +10,49 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	minishell
+NAME	= minishell
 
-CC			=	cc
-FLAGS		=	-Wall -Wextra -Werror -I ./inc/ -I ./libft/inc
-LIB			=	-L ./libft -lft -lreadline
+CC		= cc
 
-EXEC		=	pipex main
-
-SRC			=	$(addsuffix .c, $(addprefix src/main/, $(EXEC))) 
+LFLAGS	= -L./libft -lft -lreadline
+IFLAGS	= -I./inc -I./libft/inc
+CFLAGS	= -Wall -Wextra -Werror -I./inc -I./libft/inc #-g3 -fsanitize=address
 
 
-OBJ			=	$(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
-OBJ_DIR		=	.objs/
+SRCS	= ./src/main/main.c \
+					
+OBJS	= $(SRCS:%.c=%.o)
 
-# ~~~~~~~~~~~~~~~ MANDATORY ~~~~~~~~~~~~~~~ #
+
+
+$(NAME): $(OBJS) 
+
+	@echo "$(_PURPLE_)Compiling ...$(_WHITE_)"
+	@make -C libft/
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LFLAGS) 
+	@echo "$(_MEGAWHITE)minishell ✔️$(_WHITE_)"
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 all: $(NAME)
+	
+clean:
+	@rm -rf $(OBJS)
+	@rm -rf $(MLX)
+	@make -C clean libft/
+	@echo "$(_RED_)[minishell] object files deleted.$(_WHITE_)"
 
-$(NAME):	$(OBJ)
-			@make -C libft/
-			@$(CC) $(FLAGS) -o $(NAME) $(OBJ) $(LIB)
-			@echo "$(_MEGAWHITE)Done ✔️$(_WHITE_)"
-
-$(OBJ_DIR)%.o: %.c
-				@echo "$(_PURPLE_)Compiling ...$(_WHITE_)"
-				@echo "$(_YELLOW_)$@$(_WHITE_)\r"
-				@mkdir -p $(OBJ_DIR)
-				@$(CC) $(CFLAGS) -o $@ -c $< 
-
-clean:		
-			@echo "$(_RED_)Deleting object files ...$(_WHITE_)"
-			@make clean -C libft/
-			@rm -rf $(OBJ_DIR)
 
 fclean:
-			@make clean
-			@echo "$(_RED_)Deleting executable ...$(_WHITE_)"
-			@make fclean -C libft/
-			@rm -rf $(NAME)
+	@make fclean -C libft/
+	@rm -f $(OBJ)
+	@rm -f $(NAME)
+	@echo "$(_RED_)[minishell] binary file deleted.$(_WHITE_)"
+		
+re: fclean all
 
-re:			fclean all
+.PHONY: all clean fclean re
 
 # ~~~~~~~~~~~~~~~ COLOR ~~~~~~~~~~~~~~~~~~~ #
 _GREEN_=\033[0;32m
