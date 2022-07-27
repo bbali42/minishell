@@ -6,7 +6,7 @@
 /*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 19:06:43 by bbali             #+#    #+#             */
-/*   Updated: 2022/07/26 22:30:12 by bbali            ###   ########.fr       */
+/*   Updated: 2022/07/27 19:01:47 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	redirect(char *cmd, char **env)
 	}
 }
 
-int	pipex(int ac, char **av, char **env)
+int	pipex(char *cmd, char *path)
 {
 	int	fdin;
 	int	fdout;
@@ -90,8 +90,11 @@ int	pipex(int ac, char **av, char **env)
 		fdout = openfile(av[ac - 1], STDOUT_FILENO);
 		dup2(fdin, STDIN_FILENO);
 		dup2(fdout, STDOUT_FILENO);
-		while (i < ac - 2)
-			redirect(av[i++], env);
+		
+		while (i < size(token))
+		{
+			redirect(*cmd, *args, PATH);
+		}
 		exec(av[i], env);
 	}
 	else

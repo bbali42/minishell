@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/inc/libft.h"
+# include "libft.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
@@ -19,6 +19,7 @@ typedef struct	s_parse
 {
 	char			*data;
 	int				type;
+	struct s_parse	*prev;
 	struct s_parse	*next;
 }				t_parse;
 
@@ -30,12 +31,19 @@ typedef struct	s_env
 
 typedef struct	s_root
 {
-	int				fdin;
-	int				fdout;
-	t_env			env;
+	t_env			*env;
 }				t_root;
 
-int	env_init(t_root *root, char **env);
+typedef struct	s_garbage
+{
+	void			*ptr;
+	char			*type;
+	struct s_env	*next;
+}				t_garbage;
+
+// env_parse
+int		init_env(t_root *root, char **env);
+void	print_env(t_env	*env);
 // pipex
 char	*get_path(char *cmd, char **env);
 int		str_ncmp(char *str1, char *str2, int n);

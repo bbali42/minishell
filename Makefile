@@ -16,13 +16,14 @@ CC		= cc
 
 LFLAGS	= -L./libft -lft -lreadline
 IFLAGS	= -I./inc -I./libft/inc
-CFLAGS	= -Wall -Wextra -Werror -I./inc -I./libft/inc #-g3 -fsanitize=address
+CFLAGS	= -I./inc -I./libft/inc #-g3 -fsanitize=address
 
 
 SRCS	= 	./src/main/main.c \
-		./src/parsing/parsing.c\
-		./src/utils/split_to_list.c\
-		./src/utils/node_funcions.c\
+			./src/parsing/parsing.c\
+			./src/utils/split_to_list.c\
+			./src/utils/node_funcions.c\
+			./src/env/env.c \
 					
 OBJS	= $(SRCS:%.c=%.o)
 
@@ -66,4 +67,4 @@ _PURPLE_=\033[0;35m
 _CYAN_=\033[1;36m
 _RED_=\033[0;31m
 
-.PHONY:		all clean fclean re bonus install fclean-install re-install
+.PHONY:		all clean fclean re

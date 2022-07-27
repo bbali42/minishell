@@ -11,8 +11,10 @@ int	main(int ac, char **av, char **env)
 	(void) ac, (void) av, (void) env;
 	char *ok;
 	t_parse	*parsed_input;
+	t_root	*root;
 
 	parsed_input = NULL;
+	init_env(root->env, env);
 	while(1)
 	{
 		signal(SIGINT, handler);

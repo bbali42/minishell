@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenayou <rbenayou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 14:00:03 by rbenayou          #+#    #+#             */
-/*   Updated: 2022/07/27 19:16:20 by rbenayou         ###   ########.fr       */
+/*   Updated: 2022/07/27 19:49:39 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "minishell.h"
 #include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+
 
 void	scan_parse(t_parse **list)
 {
