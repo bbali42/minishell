@@ -6,7 +6,7 @@
 #    By: bbali <bbali@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/25 01:38:21 by bbali             #+#    #+#              #
-#    Updated: 2022/06/25 01:38:21 by bbali            ###   ########.fr        #
+#    Updated: 2022/07/27 19:21:27 by rbenayou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,10 @@ IFLAGS	= -I./inc -I./libft/inc
 CFLAGS	= -Wall -Wextra -Werror -I./inc -I./libft/inc #-g3 -fsanitize=address
 
 
-SRCS	= ./src/main/main.c \
+SRCS	= 	./src/main/main.c \
+		./src/parsing/parsing.c\
+		./src/utils/split_to_list.c\
+		./src/utils/node_funcions.c\
 					
 OBJS	= $(SRCS:%.c=%.o)
 
