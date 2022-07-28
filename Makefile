@@ -59,8 +59,6 @@ fclean:
 		
 re: fclean all
 
-.PHONY: all clean fclean re
-
 # ~~~~~~~~~~~~~~~ COLOR ~~~~~~~~~~~~~~~~~~~ #
 _GREEN_=\033[0;32m
 _WHITE_=\033[0;37m
