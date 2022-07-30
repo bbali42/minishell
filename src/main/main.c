@@ -6,29 +6,38 @@ void	handler(int signum)
 		exit(EXIT_SUCCESS);
 }
 
-static void	redirect_input(t_parse *parse, char **env)
+static void	execute_cmd(t_root *root, t_input *cmd)
 {
-	child_work(parse->data, get_path_bin(parse->data, env), env);
+	if (is_builtin(cmd->input))
+		exe_builtin(root, cmd->input);
+	else
+		exe_generic(root, cmd);
+}
+
+static void	process_input(t_root *root, t_input *input)
+{
+	t_input	*cmd;
+	t_input	*token;
+
+	cmd = next_cmd(input);
+	execute_cmd(root, cmd);
 }
 
 int	main(int ac, char **av, char **env)
 {
+	t_root	root;
+	t_input	*parse;
+
 	(void)ac;
 	(void)av;
-	
-	t_root	root;
-	t_parse **parsed;
-	char	*input;
-
-	if(!init_env(&root, env))
+	if (!init_env(&root, env))
 		return (0);
-	while(1)
+	while (1)
 	{
+		// Need to handle signals everywhere X.X
 		signal(SIGINT, handler);
 		signal(SIGQUIT, handler);
-		
-		input = readline("minishell: ");
-		parsed = parsing(input);
-		redirect_input(*parsed, env);
+		parse = parsing(readline("minishell> "));
+		process_input(&root, parse);
 	}	
 }

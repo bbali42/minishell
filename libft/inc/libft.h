@@ -6,7 +6,7 @@
 /*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 13:02:36 by bbali             #+#    #+#             */
-/*   Updated: 2022/07/20 13:13:19 by bbali            ###   ########.fr       */
+/*   Updated: 2022/07/30 16:01:57 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ char	*ft_strdup(const char *src);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
+int		ft_strlenchr(char *str, char c);
+char	*ft_strndup(char *str, unsigned int n);
 char	**ft_split(char const *s, char c);
+void	free_split(char **strs, int i);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
@@ -75,4 +78,5 @@ int		gnl_strlen(char *s);
 int		get_next_line(int fd, char **line);
 int		ft_strcmp(const char *s1, const char *s2);
 void	ft_putstr(char *s);
+void	*ft_memdel(void *ptr);
 #endif

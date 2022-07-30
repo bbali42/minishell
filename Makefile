@@ -19,17 +19,15 @@ IFLAGS	= -I./inc -I./libft/inc
 CFLAGS	= -I./inc -I./libft/inc #-g3 -fsanitize=address
 
 
-SRCS	= 	./src/main/main.c \
-			./src/parsing/parsing.c\
-			./src/utils/split_to_list.c\
-			./src/utils/node_functions.c\
-			./src/env/env.c \
-			./src/exec/exec.c \
-			./src/exec/utils_exec.c \
-			./src/exec/path_format.c \
+SRCS	= ./src/main/main.c \
+		./src/parsing/parsing.c\
+		./src/parsing/t_input.c\
+		./src/exec/generic.c \
+		./src/exec/builtin.c \
+		./src/exec/input_utils.c\
+		./src/builtin/env/env.c \
 					
 OBJS	= $(SRCS:%.c=%.o)
-
 
 
 $(NAME): $(OBJS) 
@@ -46,14 +44,13 @@ all: $(NAME)
 	
 clean:
 	@rm -rf $(OBJS)
-	@rm -rf $(MLX)
 	@make -C clean libft/
 	@echo "$(_RED_)[minishell] object files deleted.$(_WHITE_)"
 
 
 fclean:
 	@make fclean -C libft/
-	@rm -f $(OBJ)
+	@rm -rf $(OBJS)
 	@rm -f $(NAME)
 	@echo "$(_RED_)[minishell] binary file deleted.$(_WHITE_)"
 		

@@ -6,115 +6,112 @@
 /*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 14:00:03 by rbenayou          #+#    #+#             */
-/*   Updated: 2022/07/28 02:47:33 by bbali            ###   ########.fr       */
+/*   Updated: 2022/07/30 21:27:57 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		get_type(char *str)
+int	get_type(char *str)
 {
+	if (!ft_strcmp(str, "|"))
+		return (PIPE);
+	else if (!ft_strcmp(str, "<"))
+		return (REDIRECT_INPUT);
+	else if (!ft_strcmp(str, ">"))
+		return (REDIRECT_OUTPUT);
+	else if (!ft_strcmp(str, "<"))
+		return (CAT);
+	else if (!ft_strcmp(str, ">>"))
+		return (APPEND);
+	else
+		return (NO_SEP);
+}
+
+int	input_malloc(char *str, int	*i)
+{
+	int		count;
+	int		j;
+	char	to_check;
+
+	count = 0;
+	j = 0;
+	to_check = ' ';
+	while (str[*i + j] && (str[*i + j] != ' ' || to_check != ' '))
+	{
+		if (to_check == ' ' && (str[*i + j] == '\'' || str[*i + j] == '\"'))
+			to_check = str[*i + j++];
+		else if (to_check != ' ' && str[*i + j] == to_check)
+		{
+			count += 2;
+			to_check = ' ';
+			j++;
+		}
+		else
+			j++;
+	}
+	return (j - count + 1);
+}
+
+char	*next_input(char *line, int *i)
+{
+	char	*input;
+	int		j;
+	char	to_check;
+
+	j = 0;
+	to_check = ' ';
+	input = malloc(sizeof(char) * input_malloc(line, i));
+	if (!input)
+		return (NULL);
+	while (line[*i] && (line[*i] != ' ' || to_check != ' '))
+	{
+		if (to_check == ' ' && (line[*i] == '\'' || line[*i] == '\"'))
+			to_check = line[*i];
+		else if (to_check != ' ' && line[*i] == to_check)
+			to_check = ' ';
+		else
+			input[j++] = line[*i];
+		(*i)++;
+	}
+	input[j] = '\0';
+	return (input);
+}
+
+t_input	*split_to_list(char *str)
+{
+	t_input	*head;
+	t_input	*new;
 	int		i;
 
+	head = NULL;
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
-		if (str[0] == '|' || str[0] == '<' || str[0] == '>')
+		while (str[i] && str[i] == ' ')
+			i++;
+		if (str[i] && str[i] != ' ')
 		{
-			if (ft_strcmp(str, "|") == 0)
-				return (PIPE);
-			else if (ft_strcmp(str, "<") == 0)
-				return (REDIRECT_INPUT);
-			else if (ft_strcmp(str, ">") == 0)
-				return (REDIRECT_OUTPUT);
-			else if (ft_strcmp(str, "<") == 0)
-				return (CAT);
-			else if (ft_strcmp(str, ">>") == 0)
-				return (APPEND);
+			if (!head)
+				head = new_input(next_input(str, &i));
+			else
+				add_input(head, next_input(str, &i));
+			if (str[0] == '"' || str[0] == '\'')
+				while ((str[0] && str[1]) && str[1] != '|')
+					str++;
 		}
-		i++;
 	}
+	return (head);
 }
 
-void	print_parse(t_parse	*parse)
+t_input	*parsing(char *str)
 {
-	t_parse	*head;
+	t_input	*parse;
 
+	parse = split_to_list(str);
 	if (!parse)
-		return ;
-	head = parse;
-	while (head)
-	{
-		ft_putendl_fd(head->data, STDIN_FILENO);
-		head = head->next;
-	}
+		exit(EXIT_FAILURE); //TODO clean exit when malloc fail
+	add_history(str);
+	free(str);
+	return (parse);
 }
-
-int		quoted(char *line, int index)
-{
-	int	i;
-	int	is_closed;
-
-	i = 0;
-	is_closed = 1;
-	while (line[i] && i != index)
-	{
-		if (is_closed == 1 && line[i] == '\"')
-			is_closed = 0;
-		else if (is_closed == 1 && line[i] == '\'')
-			is_closed = -1;
-		else if (!is_closed && line[i] == '\"')
-			is_closed = 1;
-		else if (is_closed == -1 && line[i] == '\'')
-			is_closed = 1;
-		i++;
-	}
-	return (is_closed);
-}
-
-t_parse	**parsing(char *input)
-{
-	t_parse	**list;
-	
-	if (!quoted(input, INT_MAX))
-	{
-		ft_putendl_fd("Quotes not close !", STDERR_FILENO);
-		return (NULL);
-	}
-	list = (t_parse **)malloc(sizeof(t_parse *));
-	if (!list)
-		return (NULL);
-	*list = NULL;
-	split_to_list(list, input, ' ');
-	add_history(input);
-	return (list);
-}
-
-/*void	handler(int signum)
-{
-	if (signum == 2) // ctrl c
-		exit(EXIT_SUCCESS);
-}
-
-int main()
-{
-	char *ok;
-	t_parse	*parsed_input;
-
-	parsed_input = NULL;
-	while(1)
-	{
-		signal(SIGINT, handler);
-		signal(SIGQUIT, handler);
-		ok = readline("minishell: ");
-		parsing(ok, &parsed_input);
-		add_history(ok);
-		while(parsed_input)
-		{
-			printf("%s\n",parsed_input->data);
-		//	printf("%d\n",parsed_input->type);
-			parsed_input = parsed_input->next;
-		}
-	}
-}
-*/

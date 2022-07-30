@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 22:32:08 by bbali             #+#    #+#             */
+/*   Updated: 2022/07/28 22:32:08 by bbali            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -11,7 +23,7 @@
 # include <readline/history.h>
 
 // TO REMOVE !!!
-#include <stdio.h>
+# include <stdio.h>
 // TO REMOVE !!!
 
 # define NO_SEP 0
@@ -21,49 +33,52 @@
 # define CAT 4
 # define APPEND 5
 
-typedef struct	s_parse
-{
-	char			*data;
-	int				type;
-	struct s_parse	*prev;
-	struct s_parse	*next;
-}				t_parse;
-
-typedef struct	s_env
+typedef struct s_env
 {
 	char			*value;
 	struct s_env	*next;
 }				t_env;
 
-typedef struct	s_root
+typedef struct s_input
+{
+	char			*input;
+	int				type;
+	struct s_input	*prev;
+	struct s_input	*next;
+}				t_input;
+
+typedef struct s_root
 {
 	t_env			*env;
-	t_parse			**parse;
-	int				pid;
 }				t_root;
 
 // env_parse
 int		init_env(t_root *root, char **env);
-void	print_env(t_env	*env);
+int		env_size(t_env *head);
+
 // exec
-void	child_work(char *cmd, char *path_env, char **env);
-void	exec(char *cmd, char *path_env, char **env);
-char	*get_path_bin(char *cmd, char **env);
-int		str_ncmp(char *str1, char *str2, int n);
-int		strlen_chr(char *str, char c);
-char	*str_ndup(char *str, unsigned int n);
-char	**str_split(char *str, char sep);
-void	free_split(char **args);
-//parsing
-t_parse	*ft_last_node(t_parse *head);
-t_parse	*ft_new_node(char *data);
-void	ft_node_add_back(t_parse **list, t_parse *new);
-int		add_node(t_parse *list, char *data);
-int		ft_node_size(t_parse *head);
-int		split_to_list(t_parse **list, char *str, char c);
-t_parse	**parsing(char *input);
+int		is_builtin(char *cmd);
+void	exe_builtin(t_root *root, char *cmd);
+t_input	*next_cmd(t_input *input);
+t_input	*next_token(t_input *input);
+void	exe_generic(t_root *root, t_input *cmd);
+
+// Parsing
+t_input	*parsing(char *str);
+t_input	*split_to_list(char *str);
 int		get_type(char *str);
 int		quoted(char *line, int index);
-void	print_parse(t_parse	*parse);
+void	print_input(t_input	*parse);
+
+// Struct function => t_input
+t_input	*last_input(t_input *head);
+t_input	*new_input(char *str);
+void	input_add_back(t_input *list, t_input *new);
+int		add_input(t_input *list, char *str);
+int		input_size(t_input *head);
+void	print_input(t_input	*input);
+
+// builtin
+int		ft_env(t_env *env);
 
 #endif

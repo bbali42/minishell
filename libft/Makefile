@@ -6,7 +6,7 @@
 #    By: bbali <bbali@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/01 17:54:56 by bbali             #+#    #+#              #
-#    Updated: 2022/07/01 18:14:41 by bbali            ###   ########.fr        #
+#    Updated: 2022/07/30 15:58:01 by bbali            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,10 @@ SRC			= 	ft_isalpha.c \
 				ft_lstiter.c \
 				ft_lstmap.c \
 				ft_strcmp.c \
-				ft_putstr.c
+				ft_putstr.c \
+				ft_strlenchr.c \
+				ft_memdel.c \
+				ft_strndup.c
 				
 OBJ_NAME	= 	$(SRC:.c=.o)
 OBJ 		=	$(addprefix $(OBJ_DIR),$(OBJ_NAME))
@@ -72,7 +75,6 @@ all: 			$(NAME)
 $(NAME): 		$(OBJ)
 				@ar rc $(NAME) $(OBJ)
 				@ranlib $(NAME)
-				@echo "[libft] compiled"
 				
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 				@mkdir -p $(OBJ_DIR)
@@ -80,11 +82,9 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 
 clean:			
 				@rm -rf $(OBJ_DIR)
-				@echo "[libft] object files deleted"
 				
 fclean:			clean
 				@rm -rf $(NAME)
-				@echo "[libft] binary deleted"
 				
 re:				fclean all
 
