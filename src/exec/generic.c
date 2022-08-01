@@ -6,7 +6,7 @@
 /*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 19:06:43 by bbali             #+#    #+#             */
-/*   Updated: 2022/07/30 21:23:16 by bbali            ###   ########.fr       */
+/*   Updated: 2022/08/01 19:18:05 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,18 +119,19 @@ void	exe_generic(t_root *root, t_input *cmd)
 	char	**env_format;
 
 	pid = fork();
-	if (!pid)
+	if (pid)
 	{	
+		waitpid(pid, NULL, 0);
+		//Need to return value of EXECVE for $?
+	}
+	else
+	{
 		args = split_args(cmd);
 		env_format = split_env(root->env);
 		path = bin_path(cmd->input, env_format);
 		execve(path, args, env_format);
-		write(STDERR_FILENO, "minishell '", 11);
 		write(STDERR_FILENO, args[0], ft_strlenchr(args[0], 0));
-		write(STDERR_FILENO, "' : command not found\n", 22);
+		write(STDERR_FILENO, ": command not found\n", 20);
 		exit(127);
 	}
-	else
-		waitpid(pid, NULL, 0);
-		//Need to return value of EXECVE for $?
 }

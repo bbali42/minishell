@@ -6,7 +6,7 @@
 /*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 14:00:03 by rbenayou          #+#    #+#             */
-/*   Updated: 2022/07/30 21:27:57 by bbali            ###   ########.fr       */
+/*   Updated: 2022/08/01 19:02:52 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,16 @@ int	get_type(char *str)
 	if (!ft_strcmp(str, "|"))
 		return (PIPE);
 	else if (!ft_strcmp(str, "<"))
-		return (REDIRECT_INPUT);
+		return (REDIRECT_STDIN);
 	else if (!ft_strcmp(str, ">"))
-		return (REDIRECT_OUTPUT);
+		return (REDIRECT_STDOUT);
 	else if (!ft_strcmp(str, "<"))
 		return (CAT);
 	else if (!ft_strcmp(str, ">>"))
 		return (APPEND);
-	else
+	else if (ft_isascii(*str))
 		return (NO_SEP);
+	return (-1);
 }
 
 int	input_malloc(char *str, int	*i)
@@ -96,9 +97,6 @@ t_input	*split_to_list(char *str)
 				head = new_input(next_input(str, &i));
 			else
 				add_input(head, next_input(str, &i));
-			if (str[0] == '"' || str[0] == '\'')
-				while ((str[0] && str[1]) && str[1] != '|')
-					str++;
 		}
 	}
 	return (head);
@@ -109,8 +107,7 @@ t_input	*parsing(char *str)
 	t_input	*parse;
 
 	parse = split_to_list(str);
-	if (!parse)
-		exit(EXIT_FAILURE); //TODO clean exit when malloc fail
+	//TODO clean exit when malloc fail
 	add_history(str);
 	free(str);
 	return (parse);

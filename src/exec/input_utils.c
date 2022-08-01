@@ -48,9 +48,18 @@ void	print_input(t_input	*input)
 	}
 }
 
-t_input	*next_cmd(t_input *input)
+t_input	*next_cmd(t_input *index)
 {
-	while (input && input->type)
-		input = input->next;
-	return (input);
+	while (index && !index->type)
+		index = index->next;
+	if (index && index->type)
+		index = index->next;
+	return (index);
+}
+
+t_input	*get_token(t_input *index)
+{
+	while (index && !index->type)
+		index = index->next;
+	return (index);
 }

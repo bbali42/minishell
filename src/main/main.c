@@ -6,21 +6,28 @@ void	handler(int signum)
 		exit(EXIT_SUCCESS);
 }
 
-static void	execute_cmd(t_root *root, t_input *cmd)
-{
-	if (is_builtin(cmd->input))
-		exe_builtin(root, cmd->input);
-	else
-		exe_generic(root, cmd);
-}
-
 static void	process_input(t_root *root, t_input *input)
 {
 	t_input	*cmd;
 	t_input	*token;
+	int		pipe;
 
-	cmd = next_cmd(input);
-	execute_cmd(root, cmd);
+	cmd = input;
+	token = get_token(input);
+	while (cmd)
+	{
+		root->pid = 1;
+		if (token && token->type == PIPE)
+		{
+			ft_pipe(root, cmd);
+			if (cmd->next && !get_token(cmd->next))
+				reset_fd(root);
+		}
+		if (!token)
+			execute_cmd(root, cmd);
+		cmd = next_cmd(cmd);
+		token = get_token(cmd);
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -39,5 +46,6 @@ int	main(int ac, char **av, char **env)
 		signal(SIGQUIT, handler);
 		parse = parsing(readline("minishell> "));
 		process_input(&root, parse);
+		free_input(parse);
 	}	
 }

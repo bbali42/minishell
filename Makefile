@@ -16,7 +16,7 @@ CC		= cc
 
 LFLAGS	= -L./libft -lft -lreadline
 IFLAGS	= -I./inc -I./libft/inc
-CFLAGS	= -I./inc -I./libft/inc #-g3 -fsanitize=address
+CFLAGS	= -I./inc -I./libft/inc -g3 #-fsanitize=address
 
 
 SRCS	= ./src/main/main.c \
@@ -24,8 +24,10 @@ SRCS	= ./src/main/main.c \
 		./src/parsing/t_input.c\
 		./src/exec/generic.c \
 		./src/exec/builtin.c \
+		./src/exec/token.c \
 		./src/exec/input_utils.c\
 		./src/builtin/env/env.c \
+		./src/utils/free.c \
 					
 OBJS	= $(SRCS:%.c=%.o)
 

@@ -28,8 +28,8 @@
 
 # define NO_SEP 0
 # define PIPE 1
-# define REDIRECT_INPUT 2
-# define REDIRECT_OUTPUT 3
+# define REDIRECT_STDIN 2
+# define REDIRECT_STDOUT 3
 # define CAT 4
 # define APPEND 5
 
@@ -50,25 +50,31 @@ typedef struct s_input
 typedef struct s_root
 {
 	t_env			*env;
+	pid_t			pid;
+	int				r_pipe;
+	int				w_pipe;
 }				t_root;
 
-// env_parse
+// Env parse => t_env
 int		init_env(t_root *root, char **env);
 int		env_size(t_env *head);
+void	free_env(t_env *head);
 
-// exec
+// Exec
+t_input	*next_cmd(t_input *index);
+t_input	*get_token(t_input *input);
 int		is_builtin(char *cmd);
+void	execute_cmd(t_root *root, t_input *cmd);
 void	exe_builtin(t_root *root, char *cmd);
-t_input	*next_cmd(t_input *input);
-t_input	*next_token(t_input *input);
 void	exe_generic(t_root *root, t_input *cmd);
+void	ft_pipe(t_root *root, t_input *cmd);
+void	reset_fd(t_root *root);
 
 // Parsing
 t_input	*parsing(char *str);
 t_input	*split_to_list(char *str);
-int		get_type(char *str);
-int		quoted(char *line, int index);
-void	print_input(t_input	*parse);
+int		get_type(char *str);			//TO REMOVE : if not used
+int		quoted(char *line, int index);	//TO REMOVE : if not used
 
 // Struct function => t_input
 t_input	*last_input(t_input *head);
@@ -76,7 +82,8 @@ t_input	*new_input(char *str);
 void	input_add_back(t_input *list, t_input *new);
 int		add_input(t_input *list, char *str);
 int		input_size(t_input *head);
-void	print_input(t_input	*input);
+void	free_input(t_input *input);
+void	print_input(t_input	*input);	//for debug /!\ TO REMOVE
 
 // builtin
 int		ft_env(t_env *env);
