@@ -10,7 +10,6 @@ static void	process_input(t_root *root, t_input *input)
 {
 	t_input	*cmd;
 	t_input	*token;
-	int		pipe;
 
 	token = get_token(input);
 	while (input)
