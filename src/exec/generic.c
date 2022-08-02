@@ -6,7 +6,7 @@
 /*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 19:06:43 by bbali             #+#    #+#             */
-/*   Updated: 2022/08/01 23:36:00 by bbali            ###   ########.fr       */
+/*   Updated: 2022/08/02 15:23:29 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	exe_generic(t_root *root, t_input *cmd)
 		env_format = split_env(root->env);
 		path = bin_path(cmd->input, env_format);
 		execve(path, args, env_format);
-		write(STDERR_FILENO, args[0], ft_strlenchr(args[0], 0));
+		write(STDERR_FILENO, args[0], ft_strlen(args[0]));
 		write(STDERR_FILENO, ": command not found\n", 20);
 		exit(127);
 	}
