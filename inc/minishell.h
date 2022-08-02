@@ -26,12 +26,18 @@
 # include <stdio.h>
 // TO REMOVE !!!
 
-# define NO_SEP 0
-# define PIPE 1
-# define REDIRECT_STDIN 2
-# define REDIRECT_STDOUT 3
-# define CAT 4
-# define APPEND 5
+typedef enum e_enum
+{
+	NO_SEP = 0,
+	PIPE = 1,
+	REDIRECT_STDIN = 2,
+	REDIRECT_STDOUT = 3,
+	CAT = 4,
+	APPEND = 5,
+}	t_enum;
+
+# define READ 0
+# define WRITE 1
 
 typedef struct s_env
 {
@@ -51,8 +57,7 @@ typedef struct s_root
 {
 	t_env			*env;
 	pid_t			pid;
-	int				r_pipe;
-	int				w_pipe;
+	int				pipefd[2];
 }				t_root;
 
 // Env parse => t_env

@@ -6,7 +6,7 @@
 /*   By: bbali <bbali@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 19:06:43 by bbali             #+#    #+#             */
-/*   Updated: 2022/08/01 19:18:05 by bbali            ###   ########.fr       */
+/*   Updated: 2022/08/01 23:36:00 by bbali            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ static char	*path_join(char *path, char *cmd)
 	int		i;
 	int		j;
 
-	res = malloc(sizeof(char) * (ft_strlenchr(path, 0) + \
-	ft_strlenchr(cmd, 0) + 2));
+	res = malloc(sizeof(char) * (ft_strlen(path) + \
+	ft_strlen(cmd) + 2));
 	i = 0;
 	j = 0;
 	while (path[j])

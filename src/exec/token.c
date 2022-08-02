@@ -16,42 +16,39 @@ static void	redirect_fd(t_root *root)
 {
 	if (root->pid == 0)
 	{
-		close(root->w_pipe);
-		root->w_pipe = -1;
-		exit(EXIT_SUCCESS);
+		close(root->pipefd[WRITE]);
+		root->pipefd[WRITE] = -1;
+		exit(EXIT_SUCCESS); // TODO return $?
 	}
 	dup2(STDOUT_FILENO, STDOUT_FILENO);
-	close(root->r_pipe);
-	root->r_pipe = -1;
+	close(root->pipefd[READ]);
+	root->pipefd[READ] = -1;
 }
 
 void	reset_fd(t_root *root)
 {
 	dup2(STDIN_FILENO, STDIN_FILENO);
-	root->w_pipe = -1;
+	root->pipefd[WRITE] = -1;
 }
 
 void	ft_pipe(t_root *root, t_input *cmd)
 {
 	pid_t	pid;
-	int		pipefd[2];
 
 	//TODO : if pipe/fork/dup fail ?
-	pipe(pipefd);
+	pipe(root->pipefd);
 	pid = fork();
 	if (pid)
 	{
-		close(pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
-		root->r_pipe = pipefd[0];
+		close(root->pipefd[WRITE]);
+		dup2(root->pipefd[READ], STDIN_FILENO);
 		root->pid = pid;
 		waitpid(-1, NULL, 0);
 	}
 	else
 	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		root->w_pipe = pipefd[1];
+		close(root->pipefd[READ]);
+		dup2(root->pipefd[WRITE], STDOUT_FILENO);
 		root->pid = 0;
 		execute_cmd(root, cmd);
 	}

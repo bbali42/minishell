@@ -12,21 +12,20 @@ static void	process_input(t_root *root, t_input *input)
 	t_input	*token;
 	int		pipe;
 
-	cmd = input;
 	token = get_token(input);
-	while (cmd)
+	while (input)
 	{
 		root->pid = 1;
 		if (token && token->type == PIPE)
 		{
-			ft_pipe(root, cmd);
-			if (cmd->next && !get_token(cmd->next))
+			ft_pipe(root, input);
+			if (input->next && !get_token(input->next))
 				reset_fd(root);
 		}
 		if (!token)
-			execute_cmd(root, cmd);
-		cmd = next_cmd(cmd);
-		token = get_token(cmd);
+			execute_cmd(root, input);
+		input = next_cmd(input);
+		token = get_token(input);
 	}
 }
 
