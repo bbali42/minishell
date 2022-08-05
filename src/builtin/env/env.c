@@ -40,7 +40,7 @@ int	init_env(t_root *root, char **array)
 	env->next = NULL;
 	root->env = env;
 	i = 1;
-	while (array && array[0] && array[i])
+	while (array && array[i])
 	{
 		new = malloc(sizeof(t_env));
 		if (!new)

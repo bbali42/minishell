@@ -25,6 +25,7 @@ SRCS	= ./src/main/main.c \
 		./src/exec/generic.c \
 		./src/exec/builtin.c \
 		./src/exec/token.c \
+		./src/exec/fd.c \
 		./src/exec/input_utils.c\
 		./src/builtin/env/env.c \
 		./src/utils/free.c \

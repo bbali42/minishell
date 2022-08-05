@@ -14,15 +14,15 @@ static void	process_input(t_root *root, t_input *input)
 	token = get_token(input);
 	while (input)
 	{
-		root->pid = 1;
 		if (token && token->type == PIPE)
 		{
 			ft_pipe(root, input);
-			if (input->next && !get_token(input->next))
-				reset_fd(root);
 		}
 		if (!token)
+		{
 			execute_cmd(root, input);
+			reset_std_fd(root);
+		}
 		input = next_cmd(input);
 		token = get_token(input);
 	}
@@ -35,6 +35,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	get_std_fd(&root);
 	if (!init_env(&root, env))
 		return (0);
 	while (1)
@@ -45,5 +46,6 @@ int	main(int ac, char **av, char **env)
 		parse = parsing(readline("minishell> "));
 		process_input(&root, parse);
 		free_input(parse);
-	}	
+	}
+
 }

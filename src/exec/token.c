@@ -17,18 +17,9 @@ static void	redirect_fd(t_root *root)
 	if (root->pid == 0)
 	{
 		close(root->pipefd[WRITE]);
-		root->pipefd[WRITE] = -1;
 		exit(EXIT_SUCCESS); // TODO return $?
 	}
-	dup2(STDOUT_FILENO, STDOUT_FILENO);
 	close(root->pipefd[READ]);
-	root->pipefd[READ] = -1;
-}
-
-void	reset_fd(t_root *root)
-{
-	dup2(STDIN_FILENO, STDIN_FILENO);
-	root->pipefd[WRITE] = -1;
 }
 
 void	ft_pipe(t_root *root, t_input *cmd)
@@ -43,7 +34,7 @@ void	ft_pipe(t_root *root, t_input *cmd)
 		close(root->pipefd[WRITE]);
 		dup2(root->pipefd[READ], STDIN_FILENO);
 		root->pid = pid;
-		waitpid(-1, NULL, 0);
+		waitpid(pid, NULL, 0);
 	}
 	else
 	{

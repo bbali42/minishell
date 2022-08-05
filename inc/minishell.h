@@ -58,6 +58,8 @@ typedef struct s_root
 	t_env			*env;
 	pid_t			pid;
 	int				pipefd[2];
+	int				stdin;
+	int				stdout;
 }				t_root;
 
 // Env parse => t_env
@@ -73,7 +75,8 @@ void	execute_cmd(t_root *root, t_input *cmd);
 void	exe_builtin(t_root *root, char *cmd);
 void	exe_generic(t_root *root, t_input *cmd);
 void	ft_pipe(t_root *root, t_input *cmd);
-void	reset_fd(t_root *root);
+int		reset_std_fd(t_root *root);
+int		get_std_fd(t_root *root);
 
 // Parsing
 t_input	*parsing(char *str);
